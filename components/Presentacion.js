@@ -1,10 +1,36 @@
-import { StyleSheet, Text, View, Image, ScrollView, Linking, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  Linking,
+  Pressable,
+} from 'react-native';
+
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+} from 'react-native-safe-area-context';
 
 export default function Presentacion() {
 
   const abrirInstagram = async () => {
     const url = 'https://instagram.com/ludmilagaido_';
+
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      console.log('No se puede abrir el link');
+    }
+  };
+
+  const abrirTwitter = async () => {
+    const url = 'https://x.com/ludmig19?s=11';
+
     const supported = await Linking.canOpenURL(url);
 
     if (supported) {
@@ -15,105 +41,224 @@ export default function Presentacion() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ backgroundColor: '#375261', paddingBottom: 20 }}>
+    <SafeAreaProvider>
 
-        {/* ENCABEZADO */}
-        <View style={s.header}>
-          <Text style={s.nombre}>Ludmila Gaido</Text>
-          <Text style={s.texto}>Un poco de mi vida</Text>
-        </View>
+      <SafeAreaView style={s.container}>
 
-        {/* FOTO ACTUAL */}
-        <Image
-          source={require('../assets/espejo.jpeg')}
-          style={s.fotoPrincipal}
-        />
+        <ScrollView
+          style={{ flex: 1 }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={s.scrollContainer}
+        >
 
-        {/* INSTAGRAM */}
-        <TouchableOpacity onPress={abrirInstagram}>
-          <Text style={s.link}>@ludmilagaido_</Text>
-        </TouchableOpacity>
+          {/* ENCABEZADO */}
+          <View style={s.header}>
 
-        {/* FOTOS DE VIDA */}
-        <Text style={s.titulo}>Mi recorrido</Text>
+            <Text style={s.nombre}>
+              Ludmila Gaido
+            </Text>
 
-        <View style={s.tarjeta}>
-          <Image source={require('../assets/BEBE.jpeg')} style={s.foto} />
-          <Text style={s.texto}>De bebé</Text>
-        </View>
+            <Text style={s.texto}>
+              Un poco de mi vida
+            </Text>
 
-        <View style={s.tarjeta}>
-          <Image source={require('../assets/jardin.jpeg')} style={s.foto} />
-          <Text style={s.texto}>En el jardincito</Text>
-        </View>
+          </View>
 
-        <View style={s.tarjeta}>
-          <Image source={require('../assets/primavera.jpeg')} style={s.foto} />
-          <Text style={s.texto}>Primer primavera con remera</Text>
-        </View>
+          {/* FOTO PRINCIPAL */}
+          <Image
+            source={require('../assets/espejo.jpeg')}
+            style={s.fotoPrincipal}
+            resizeMode="cover"
+          />
 
-        <View style={s.tarjeta}>
-          <Image source={require('../assets/voley.jpeg')} style={s.foto} />
-          <Text style={s.texto}>
-            El deporte es muy importante en mi vida, especialmente el vóley
+          {/* BOTÓN INSTAGRAM */}
+          <Pressable
+            onPress={abrirInstagram}
+            style={({ pressed }) => [
+              s.botonInstagram,
+              pressed && { opacity: 0.7 },
+            ]}
+          >
+            <Text style={s.linkInstagram}>
+              @ludmilagaido_
+            </Text>
+          </Pressable>
+
+          {/* TÍTULO */}
+          <Text style={s.titulo}>
+            Mi recorrido
           </Text>
-        </View>
 
-        <View style={s.tarjeta}>
-          <Image source={require('../assets/campera.jpeg')} style={s.foto} />
-          <Text style={s.texto}>Hoy soy ella</Text>
-        </View>
+          {/* TARJETAS */}
 
-        {/* CIERRE */}
-        <Text style={s.footer}>Egresada 2026 🎓</Text>
+          <View style={s.tarjeta}>
 
-      </ScrollView>
-    </SafeAreaView>
+            <Image
+              source={require('../assets/BEBE.jpeg')}
+              style={s.foto}
+              resizeMode="cover"
+            />
+
+            <Text style={s.texto}>
+              De bebé
+            </Text>
+
+          </View>
+
+          <View style={s.tarjeta}>
+
+            <Image
+              source={require('../assets/jardin.jpeg')}
+              style={s.foto}
+              resizeMode="cover"
+            />
+
+            <Text style={s.texto}>
+              En el jardincito
+            </Text>
+
+          </View>
+
+          <View style={s.tarjeta}>
+
+            <Image
+              source={require('../assets/primavera.jpeg')}
+              style={s.foto}
+              resizeMode="cover"
+            />
+
+            <Text style={s.texto}>
+              Primer primavera con remera
+            </Text>
+
+          </View>
+
+          <View style={s.tarjeta}>
+
+            <Image
+              source={require('../assets/voley.jpeg')}
+              style={s.foto}
+              resizeMode="cover"
+            />
+
+            <Text style={s.texto}>
+              El deporte es muy importante
+              en mi vida, especialmente
+              el vóley
+            </Text>
+
+          </View>
+
+          <View style={s.tarjeta}>
+
+            <Image
+              source={require('../assets/campera.jpeg')}
+              style={s.foto}
+              resizeMode="cover"
+            />
+
+            <Text style={s.texto}>
+              Hoy soy ella
+            </Text>
+
+          </View>
+
+          {/* SECCIÓN TWITTER/X */}
+
+          <View style={s.seccionTwitter}>
+
+            <Text style={s.textoTwitter}>
+              Seguime también en X 
+            </Text>
+
+            <Pressable
+              onPress={abrirTwitter}
+              style={({ pressed }) => [
+                s.botonTwitter,
+                pressed && { opacity: 0.7 },
+              ]}
+            >
+              <Text style={s.linkTwitter}>
+                @ludmig19
+              </Text>
+            </Pressable>
+
+          </View>
+
+          {/* FOOTER */}
+          <Text style={s.footer}>
+            Egresada 2026 🎓
+          </Text>
+
+        </ScrollView>
+
+      </SafeAreaView>
+
+    </SafeAreaProvider>
   );
 }
 
 const s = StyleSheet.create({
-  header: { 
-    alignItems: 'center', 
-    padding: 20, 
-    backgroundColor: '#AECDDF' 
+
+  container: {
+    flex: 1,
+    backgroundColor: '#375261',
   },
 
-  nombre: { 
-    fontSize: 28, 
-    fontWeight: 'bold', 
-    color: 'beige' 
+  scrollContainer: {
+    paddingBottom: 40,
+    flexGrow: 1,
   },
 
-  texto: { 
-    fontSize: 14, 
-    marginTop: 5, 
+  header: {
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#AECDDF',
+  },
+
+  nombre: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: 'beige',
+  },
+
+  texto: {
+    fontSize: 14,
+    marginTop: 5,
     textAlign: 'center',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    color: '#222',
   },
 
-  fotoPrincipal: { 
-    width: '70%', 
-    height: 250,  
-    alignSelf: 'center', 
+  fotoPrincipal: {
+    width: '70%',
+    height: 250,
+    alignSelf: 'center',
     marginTop: 18,
-    borderRadius: 10
+    borderRadius: 10,
   },
 
-  link: {
-    color: '#B2DAFA',
-    textAlign: 'center',
-    marginVertical: 15,
-    fontWeight: 'bold'
+  botonInstagram: {
+    alignSelf: 'center',
+    backgroundColor: '#4E7085',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 15,
+    marginTop: 15,
   },
 
-  titulo: { 
-    fontSize: 20, 
-    margin: 10, 
-    fontWeight: 'bold', 
+  linkInstagram: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+
+  titulo: {
+    fontSize: 20,
+    margin: 10,
+    fontWeight: 'bold',
     color: '#8CB4D8',
-    textAlign: 'center'
+    textAlign: 'center',
   },
 
   tarjeta: {
@@ -122,20 +267,51 @@ const s = StyleSheet.create({
     marginVertical: 6,
     padding: 10,
     borderRadius: 10,
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
-  foto: { 
-    width: '100%', 
-    height: 180, 
+  foto: {
+    width: '95%',
+    height: 180,
     marginBottom: 5,
-    borderRadius: 8
+    borderRadius: 8,
+  },
+
+  /* TWITTER/X */
+
+  seccionTwitter: {
+    marginTop: 30,
+    alignItems: 'center',
+  },
+
+  textoTwitter: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+
+  botonTwitter: {
+    backgroundColor: '#111',
+    paddingVertical: 14,
+    paddingHorizontal: 35,
+    borderRadius: 20,
+  },
+
+  linkTwitter: {
+    color: 'white',
+    fontSize: 17,
+    fontWeight: 'bold',
   },
 
   footer: {
     textAlign: 'center',
     padding: 20,
     fontWeight: 'bold',
-    color: 'white'
-  }
+    color: 'white',
+    fontSize: 16,
+    marginTop: 15,
+  },
+
 });
+
